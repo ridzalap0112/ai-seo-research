@@ -52,13 +52,26 @@ class VideoTarget:
 
 
 VIDEOS: list[VideoTarget] = [
-    # Examples:
-    # VideoTarget(
-    #     expert_name="Mike King",
-    #     url="https://www.youtube.com/watch?v=VIDEO_ID",
-    #     title="Optional Manual Title",
-    #     channel="Optional Manual Channel",
-    # ),
+    VideoTarget(
+        expert_name="Mike King",
+        url="https://www.youtube.com/watch?v=p0XPAM-kQUk",
+        title="SEO Is Not Ready for What AI Is About to Do",
+        channel="iPullRank"
+    ),
+
+    VideoTarget(
+        expert_name="Mike King",
+        url="https://www.youtube.com/watch?v=xKuZzur3yoA",
+        title="Relevance Engineering: How CMOs Should Approach AI Search",
+        channel="iPullRank"
+    ),
+
+    VideoTarget(
+        expert_name="Mike King",
+        url="https://www.youtube.com/watch?v=2HApQVWyMkE",
+        title="Why Cutting Content Is the Wrong Move for AI Search Visibility",
+        channel="iPullRank"
+    ),
 ]
 
 
@@ -95,11 +108,12 @@ def slugify(value: str) -> str:
 
 def get_transcript(video_id: str) -> str:
     """Fetch a transcript and return it as readable plain text."""
-    transcript = YouTubeTranscriptApi.get_transcript(
+    api = YouTubeTranscriptApi()
+    transcript = api.fetch(
         video_id,
         languages=list(PREFERRED_LANGUAGES),
     )
-    return "\n".join(item["text"].strip() for item in transcript if item.get("text"))
+    return "\n".join(snippet.text.strip() for snippet in transcript if snippet.text)
 
 
 def build_markdown(
